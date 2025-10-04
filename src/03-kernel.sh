@@ -26,9 +26,15 @@ function build(){
     } | cut -f 2 -d " " | while read line ; do
          ./scripts/config --disable CONFIG_$config
     done
+     ./scripts/config --enable CONFIG_DRM_EFIDRM
+     ./scripts/config --enable CONFIG_DRM_SIMPLEDRM
+     ./scripts/config --enable CONFIG_DRM_VESADRM
+     grep "CONFIG_[A-Z0-9]*_FS" .config  | cut -f2 -d" " | while read cfg ; do
+        ./scripts/config --enable $cfg
+     done
+
     cd ..
-    yes "" | make oldconfig -C linux-${_kver}
-    make bzImage -j`nproc` -C linux-${_kver}
+    yes "" | make bzImage -j`nproc` -C linux-${_kver}
 }
 
 function package(){
