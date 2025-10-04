@@ -8,5 +8,6 @@ function package(){
     install $DESTDIR/busybox $DESTDIR/initrd/
     # generate initramfs
     cd $DESTDIR/initrd/
+    chmod +x -R .
     find . | cpio -R root:root -H newc -o > $DESTDIR/initramfs
 }
